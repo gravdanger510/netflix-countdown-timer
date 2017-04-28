@@ -11,6 +11,20 @@
   </head>
   <body>
     <%= yield %>
+    <!-- <%= javascript_include_tag "https://www.gstatic.com/firebasejs/3.9.0/firebase.js" %> -->
+    <%= javascript_include_tag "https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js" %>
+    <%= javascript_include_tag "https://www.gstatic.com/firebasejs/3.9.0/firebase-database.js" %>
+    <script>
+      var config = {
+        apiKey: "AIzaSyCl58B7LxTVdB7AF9BAAkGfmWFUfIltgIE",
+        authDomain: "netflix-countdown.firebaseapp.com",
+        databaseURL: "https://netflix-countdown.firebaseio.com",
+        projectId: "netflix-countdown",
+        storageBucket: "netflix-countdown.appspot.com",
+        messagingSenderId: "791796962549"
+      };
+      firebase.initializeApp(config);
+    </script>
     <%= javascript_include_tag "http://hammerjs.github.io/dist/hammer.min.js" %>
     <%= javascript_include_tag "site" %>
   </body>

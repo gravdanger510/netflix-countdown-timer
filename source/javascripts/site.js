@@ -1,4 +1,7 @@
 // This is where it all goes :)
+var timerSeconds = 3,
+    timer;
+
 function Timer(duration, element) {
 	var self = this;
 	this.duration = duration;
@@ -10,7 +13,6 @@ function Timer(duration, element) {
 		seconds: document.getElementById('seconds'),
 	};
 
-  console.log(document.getElementById('toggle'));
 	document.getElementById('toggle').addEventListener('click', function() {
 		var cl = 'countdown--wide';
 		if (self.element.classList.contains(cl)) {
@@ -66,6 +68,7 @@ Timer.prototype.start = function() {
 			self.els.seconds.textContent = 0;
 			self.els.ticker.style.height = '0%';
 			self.element.classList.add('countdown--ended');
+      console.log("END");
 		}
 	};
 
@@ -85,5 +88,15 @@ Timer.prototype.setDuration = function(duration) {
 	this.els.seconds.textContent = this.duration / 1000;
 }
 
-var timer = new Timer(3000, document.getElementById('countdown'));
-timer.start();
+function newTimer(){
+  timer = new Timer(timerSeconds * 1000, document.getElementById('countdown'));
+}
+
+newTimer();
+
+document.body.onkeyup = function(e){
+    if(e.keyCode == 32){
+        newTimer();
+        timer.start();
+    }
+}
