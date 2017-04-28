@@ -3,12 +3,26 @@ $one-second: 1s;
 $easing: cubic-bezier(1,0,1,0);
 /* =========================================== */
 
+@mixin animateSeconds($count) {
+  $step: (100 / $count);
+  $progress: 0%;
+  $translate: -$digit-height;
+  @while $progress < 90 {
+    #{$progress} {
+      transform: translateY($translate);
+    }
+    $progress: $progress + $step;
+    $translate: $translate - $digit-height;
+    @debug "#{$progress}";
+  }
+}
+
 @mixin animate($count) {
   $step: (100 / $count);
   $progress: 0%;
   $translate: -$digit-height;
   @while $progress < 100 {
-    #{$progress} { transform: translateY($translate); }
+    #{$progress} {transform: translateY($translate);}
     $progress: $progress + $step;
     $translate: $translate - $digit-height;
   }
