@@ -6,14 +6,20 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Use the title from a page's frontmatter if it has one -->
-    <title><%= current_page.data.title || "Middleman" %></title>
-    <%= stylesheet_link_tag "site" %>
+    <title>Welcome to Middleman</title>
+    <link href="/stylesheets/site.css" rel="stylesheet" />
   </head>
   <body>
-    <%= yield %>
-    <!-- <%= javascript_include_tag "https://www.gstatic.com/firebasejs/3.9.0/firebase.js" %> -->
-    <%= javascript_include_tag "https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js" %>
-    <%= javascript_include_tag "https://www.gstatic.com/firebasejs/3.9.0/firebase-database.js" %>
+    <div class='container'>
+<div class='countdown' id='countdown'>
+<div class='countdown__fill' id='ticker'></div>
+<div class='countdown__digit' id='seconds'>00</div>
+</div>
+</div>
+
+    <!-- <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-database.js"></script>
     <script>
       var config = {
         apiKey: "AIzaSyCl58B7LxTVdB7AF9BAAkGfmWFUfIltgIE",
@@ -25,7 +31,7 @@
       };
       firebase.initializeApp(config);
     </script>
-    <%= javascript_include_tag "https://hammerjs.github.io/dist/hammer.min.js" %>
-    <%= javascript_include_tag "site" %>
+    <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+    <script src="/javascripts/site.js"></script>
   </body>
 </html>

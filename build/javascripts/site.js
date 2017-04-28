@@ -76,7 +76,7 @@ Timer.prototype.start = function() {
 			self.els.seconds.textContent = 0;
 			self.els.ticker.style.height = '0%';
 			self.element.classList.add('countdown--ended');
-
+      console.log("END");
 		}
 	};
 
@@ -100,11 +100,6 @@ function newTimer(){
   timer = new Timer(timerSeconds * 1000, document.getElementById('countdown'));
 }
 
-function timerEnd(){
-  newTimer();
-  console.log("END");
-}
-
 newTimer();
 
 document.body.onkeyup = function(e){
@@ -117,8 +112,9 @@ setInterval(function() {
   dbRef.once('value')
     .then(function(snapshot) {
       if (snapshot.val() == true) {
+        newTimer();
         timer.start();
         dbRef.set(false);
       }
     })
-}, 300);
+}, 1000);
