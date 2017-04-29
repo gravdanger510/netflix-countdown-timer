@@ -1,23 +1,15 @@
 // This is where it all goes :)
-var timerSeconds = 3,
+var timerSeconds = 5,
     timer,
-    dbRef = firebase.database().ref().child('ready');
-
-
-    // dbRef.on('value', snap => {
-    //   if(snap.val() == true) {
-    //     console.log("truuuu");
-    //   }
-    //   else {
-    //     console.log('not truuu');
-    //     dbRef.set(false);
-    //   }
-    // });
+    dbRef = firebase.database().ref().child('ready'),
+    countingDown = false;
 
     dbRef.once('value')
       .then(function(snapshot){
         dbRef.set(false);
       });
+
+document.getElementById('seconds').innerHTML = timerSeconds;
 
 function Timer(duration, element) {
 	var self = this;
@@ -56,6 +48,8 @@ Timer.prototype.start = function() {
 	var start = null;
 	this.running = true;
 	var remainingSeconds = this.els.seconds.textContent = this.duration / 1000;
+  var boop = document.getElementById("boop");
+  boop.play();
 
 	function draw(now) {
 		if (!start) start = now;
@@ -68,6 +62,7 @@ Timer.prototype.start = function() {
 			if (newSeconds != remainingSeconds) {
 				self.els.seconds.textContent = newSeconds;
 				remainingSeconds = newSeconds;
+        boop.play();
 			}
 
 			self.frameReq = window.requestAnimationFrame(draw);
@@ -76,6 +71,7 @@ Timer.prototype.start = function() {
 			self.els.seconds.textContent = 0;
 			self.els.ticker.style.height = '0%';
 			self.element.classList.add('countdown--ended');
+      timerEnd();
 
 		}
 	};
@@ -101,24 +97,31 @@ function newTimer(){
 }
 
 function timerEnd(){
-  newTimer();
   console.log("END");
+  document.getElementById("beep").play();
+  dbRef.set(false);
+  countingDown = false;
+  window.setTimeout(function() {
+    timer.reset();
+  }, 1000);
 }
 
 newTimer();
 
 document.body.onkeyup = function(e){
-    if(e.keyCode == 32){
-        dbRef.set(true);
-    }
+  if(e.keyCode == 32){
+      dbRef.set(true);
+  }
 }
 
 setInterval(function() {
-  dbRef.once('value')
-    .then(function(snapshot) {
-      if (snapshot.val() == true) {
-        timer.start();
-        dbRef.set(false);
-      }
-    })
-}, 300);
+  if(countingDown != true) {
+    dbRef.once('value')
+      .then(function(snapshot) {
+        if (snapshot.val() == true) {
+          timer.start();
+          countingDown = true;
+        }
+      })
+  }
+}, 7);
