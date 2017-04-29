@@ -51,6 +51,13 @@ Timer.prototype.start = function() {
   var boop = document.getElementById("boop");
   boop.play();
 
+  window.setTimeout(function() {
+    console.log("END");
+    document.getElementById("beep").play();
+    dbRef.set(false);
+    countingDown = false;
+  }, 1000 * timerSeconds);
+
 	function draw(now) {
 		if (!start) start = now;
 		var diff = now - start;
@@ -71,7 +78,7 @@ Timer.prototype.start = function() {
 			self.els.seconds.textContent = 0;
 			self.els.ticker.style.height = '0%';
 			self.element.classList.add('countdown--ended');
-      timerEnd();
+      // timerEnd();
 
 		}
 	};

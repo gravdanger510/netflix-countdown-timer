@@ -79,11 +79,11 @@ body {
     position: absolute;
     left: 0;
     bottom: 0;
-    background: #FF5722;
+    background: #B9090B;
     opacity: 1; }
   .countdown__digit {
     width: 100%;
-    color: #FF5722;
+    color: #B9090B;
     text-align: center;
     mix-blend-mode: difference;
     pointer-events: none;
