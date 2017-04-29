@@ -56,6 +56,7 @@ Timer.prototype.start = function() {
     document.getElementById("beep").play();
     dbRef.set(false);
     countingDown = false;
+    timer.reset();
   }, 1000 * timerSeconds);
 
 	function draw(now) {
