@@ -1,13 +1,12 @@
-// This is where it all goes :)
 var timerSeconds = 5,
-    timer,
-    dbRef = firebase.database().ref().child('ready'),
-    countingDown = false;
+  timer,
+  dbRef = firebase.database().ref().child('ready'),
+  countingDown = false;
 
-    dbRef.once('value')
-      .then(function(snapshot){
-        dbRef.set(false);
-      });
+dbRef.once('value')
+  .then(function(snapshot){
+    dbRef.set(false);
+  });
 
 document.getElementById('seconds').innerHTML = timerSeconds;
 
@@ -21,26 +20,6 @@ function Timer(duration, element) {
 		ticker: document.getElementById('ticker'),
 		seconds: document.getElementById('seconds'),
 	};
-
-	var hammerHandler = new Hammer(this.element);
-	hammerHandler.get('pan').set({ direction: Hammer.DIRECTION_VERTICAL });
-	hammerHandler.on('panup pandown', function(ev) {
-		if (!self.running) {
-			if (ev.direction === Hammer.DIRECTION_UP && self.duration < 999000) {
-				self.setDuration(self.duration + 1000);
-			} else if (ev.direction === Hammer.DIRECTION_DOWN && self.duration > 0) {
-				self.setDuration(self.duration - 1000);
-			}
-		}
-	});
-
-	hammerHandler.on('tap', function() {
-		if (self.running) {
-			self.reset();
-		} else {
-			self.start();
-		}
-	})
 }
 
 Timer.prototype.start = function() {
@@ -74,15 +53,11 @@ Timer.prototype.start = function() {
 
 			self.frameReq = window.requestAnimationFrame(draw);
 		} else {
-			self.running = false;
 			self.els.seconds.textContent = 0;
 			self.els.ticker.style.height = '0%';
 			self.element.classList.add('countdown--ended');
-      // timerEnd();
-
 		}
 	};
-
 	self.frameReq = window.requestAnimationFrame(draw);
 }
 
