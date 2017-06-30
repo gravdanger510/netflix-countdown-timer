@@ -82,6 +82,7 @@ body {
     background: #B9090B;
     opacity: 1; }
   .countdown__digit {
+    font-family: 'Shrikhand', sans-serif;
     width: 100%;
     color: #B9090B;
     text-align: center;
