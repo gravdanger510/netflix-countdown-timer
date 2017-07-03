@@ -27,7 +27,7 @@ Timer.prototype.start = function() {
 	var start = null;
 	this.running = true;
 	var remainingSeconds = this.els.seconds.textContent = this.duration / 1000;
-  var boop = document.getElementById("boop");
+  var boop = document.getElementById('boop');
   boop.play();
 
   window.setTimeout(function() {
@@ -36,6 +36,40 @@ Timer.prototype.start = function() {
     countingDown = false;
     timer.reset();
   }, 1000 * timerSeconds);
+
+  window.setTimeout(function() {
+    console.log("END");
+    document.getElementById("beep").play();
+    dbRef.set(false);
+    countingDown = false;
+    timer.reset();
+  }, 1000 * timerSeconds - 1);
+
+  window.setTimeout(function() {
+    console.log("END");
+    document.getElementById("beep").play();
+    dbRef.set(false);
+    countingDown = false;
+    timer.reset();
+  }, 1000 * timerSeconds - 2);
+
+  window.setTimeout(function() {
+    console.log("END");
+    document.getElementById("beep").play();
+    dbRef.set(false);
+    countingDown = false;
+    timer.reset();
+  }, 1000 * timerSeconds - 3);
+
+  window.setTimeout(function() {
+    console.log("END");
+    document.getElementById("beep").play();
+    dbRef.set(false);
+    countingDown = false;
+    timer.reset();
+  }, 1000 * timerSeconds - 4);
+
+
 
 	function draw(now) {
 		if (!start) start = now;
@@ -48,7 +82,7 @@ Timer.prototype.start = function() {
 			if (newSeconds != remainingSeconds) {
 				self.els.seconds.textContent = newSeconds;
 				remainingSeconds = newSeconds;
-        boop.play();
+        // boop.play();
 			}
 
 			self.frameReq = window.requestAnimationFrame(draw);
