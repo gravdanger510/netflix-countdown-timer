@@ -34,10 +34,12 @@ function resetTimer() {
 }
 
 function startTimer() {
-  countingDown = true;
-  dbRef.set(true);
-  setTimeout(function() { preventStart() }, checkInterval);
-  timer();
+  if (!countingDown) {
+    countingDown = true;
+    dbRef.set(true);
+    setTimeout(function() { preventStart() }, checkInterval);
+    timer();
+  }
 }
 
 function preventStart() {
