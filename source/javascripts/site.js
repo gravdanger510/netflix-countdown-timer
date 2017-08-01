@@ -1,133 +1,77 @@
-var timerSeconds = 5,
-  timer,
-  dbRef = firebase.database().ref().child('ready'),
+var dbRef = firebase.database().ref().child('ready');
+var countingDown = false;
+var dbInterval;
+
+var timerSeconds = 5;
+var secondsLeft = 0;
+var checkInterval = 7;
+var secondsElement = document.getElementById('seconds');
+secondsElement.innerHTML = timerSeconds;
+
+resetTimer();
+
+document.body.onclick = function(e) {
+  startTimer();
+}
+
+function boop() {
+  document.getElementById('boop').play();
+  subtractTime();
+}
+
+function beep() {
+  document.getElementById('beep').play();
+  subtractTime();
+  resetTimer();
+}
+
+function resetTimer() {
   countingDown = false;
+  dbRef.set(false);
+  dbInterval = setInterval(function() { checkDb() }, checkInterval);
+  secondsElement.innerHTML = timerSeconds;
+  secondsLeft = timerSeconds;
+}
 
-dbRef.once('value')
-  .then(function(snapshot){
-    dbRef.set(false);
+function startTimer() {
+  countingDown = true;
+  dbRef.set(true);
+  setTimeout(function() { preventStart() }, checkInterval);
+  timer();
+}
+
+function preventStart() {
+  dbRef.set(false);
+}
+
+function timer() {
+  if (countingDown) {
+    document.getElementById('boop').play();
+    var countdownInterval = setInterval("boop()", 1000);
+
+    setTimeout(function() {
+      clearInterval(countdownInterval);
+    }, (timerSeconds - 1) * 1000);
+
+    setTimeout(function() {
+      beep();
+    }, timerSeconds * 1000);
+  }
+}
+
+function subtractTime() {
+  secondsLeft--;
+  secondsElement.innerHTML = secondsLeft;
+}
+
+function checkDb() {
+  var snapshotValue;
+  dbRef.once('value').then(function(snapshot) {
+    snapshotValue = snapshot.val();
+
+    if (!countingDown && (snapshotValue == true)) {
+      clearInterval(dbInterval);
+      startTimer();
+    }
   });
-
-document.getElementById('seconds').innerHTML = timerSeconds;
-
-function Timer(duration, element) {
-	var self = this;
-	this.duration = duration;
-	this.element = element;
-	this.running = false;
-
-	this.els = {
-		ticker: document.getElementById('ticker'),
-		seconds: document.getElementById('seconds'),
-	};
 }
-
-Timer.prototype.start = function() {
-	var self = this;
-	var start = null;
-	this.running = true;
-	var remainingSeconds = this.els.seconds.textContent = this.duration / 1000;
-  var boop = document.getElementById('boop');
-  boop.play();
-
-  window.setTimeout(function() {
-    document.getElementById("beep").play();
-    dbRef.set(false);
-    countingDown = false;
-    timer.reset();
-  }, 1000 * timerSeconds);
-
-  window.setTimeout(function() {
-    console.log("END");
-    document.getElementById("beep").play();
-    dbRef.set(false);
-    countingDown = false;
-    timer.reset();
-  }, 1000 * timerSeconds - 1);
-
-  window.setTimeout(function() {
-    console.log("END");
-    document.getElementById("beep").play();
-    dbRef.set(false);
-    countingDown = false;
-    timer.reset();
-  }, 1000 * timerSeconds - 2);
-
-  window.setTimeout(function() {
-    console.log("END");
-    document.getElementById("beep").play();
-    dbRef.set(false);
-    countingDown = false;
-    timer.reset();
-  }, 1000 * timerSeconds - 3);
-
-  window.setTimeout(function() {
-    console.log("END");
-    document.getElementById("beep").play();
-    dbRef.set(false);
-    countingDown = false;
-    timer.reset();
-  }, 1000 * timerSeconds - 4);
-
-
-
-	function draw(now) {
-		if (!start) start = now;
-		var diff = now - start;
-		var newSeconds = Math.ceil((self.duration - diff)/1000);
-
-		if (diff <= self.duration) {
-			self.els.ticker.style.height = 100 - (diff/self.duration*100) + '%';
-
-			if (newSeconds != remainingSeconds) {
-				self.els.seconds.textContent = newSeconds;
-				remainingSeconds = newSeconds;
-        // boop.play();
-			}
-
-			self.frameReq = window.requestAnimationFrame(draw);
-		} else {
-			self.els.seconds.textContent = 0;
-			self.els.ticker.style.height = '0%';
-			self.element.classList.add('countdown--ended');
-		}
-	};
-	self.frameReq = window.requestAnimationFrame(draw);
-}
-
-Timer.prototype.reset = function() {
-	this.running = false;
-	window.cancelAnimationFrame(this.frameReq);
-	this.els.seconds.textContent = this.duration / 1000;
-	this.els.ticker.style.height = null;
-	this.element.classList.remove('countdown--ended');
-}
-
-Timer.prototype.setDuration = function(duration) {
-	this.duration = duration;
-	this.els.seconds.textContent = this.duration / 1000;
-}
-
-function newTimer(){
-  timer = new Timer(timerSeconds * 1000, document.getElementById('countdown'));
-}
-
-newTimer();
-
-document.body.onkeyup = function(e){
-  if(e.keyCode == 32){
-      dbRef.set(true);
-  }
-}
-
-setInterval(function() {
-  if(countingDown != true) {
-    dbRef.once('value')
-      .then(function(snapshot) {
-        if (snapshot.val() == true) {
-          timer.start();
-          countingDown = true;
-        }
-      })
-  }
-}, 7);
