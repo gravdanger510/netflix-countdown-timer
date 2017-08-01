@@ -1,6 +1,6 @@
-$col-bg: black;
+$col-bg: #171717;
 
-$col-sun: #B9090B;
+$col-sun: #2BAFFF;
 
 html,
 body {
@@ -9,6 +9,7 @@ body {
 
 body {
 	background: $col-bg;
+  font-family: 'Shrikhand', sans-serif;
 }
 
 * {
@@ -16,11 +17,17 @@ body {
 }
 
 .container {
-	height: 100%;
+	align-items: center;
+	height: 90%;
 	display: flex;
 	justify-content: center;
-	align-items: center;
 	overflow: hidden;
+}
+
+p {
+  color: #888;
+  font-size: 1.5em;
+  margin-left: 1.5em;
 }
 
 .countdown {
@@ -32,7 +39,6 @@ body {
 	justify-content: center;
 	align-items: center;
 
-	font-family: 'Oswald', sans-serif;
 	font-weight: 400;
 	font-size: 25vmin;
 
@@ -113,17 +119,4 @@ body {
 	&__button {
 		height: 50%;
 	}
-}
-
-.full-button {
-	position: absolute;
-	right: 10px;
-	bottom: 10px;
-	padding: 1em 0.5em 0.5em 2em;
-
-	font-family: 'Oswald', sans-serif;
-	text-transform: uppercase;
-	color: white;
-
-	cursor: pointer;
 }

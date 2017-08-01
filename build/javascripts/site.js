@@ -22,25 +22,25 @@ function Timer(duration, element) {
 		seconds: document.getElementById('seconds'),
 	};
 
-	// var hammerHandler = new Hammer(this.element);
-	// hammerHandler.get('pan').set({ direction: Hammer.DIRECTION_VERTICAL });
-	// hammerHandler.on('panup pandown', function(ev) {
-	// 	if (!self.running) {
-	// 		if (ev.direction === Hammer.DIRECTION_UP && self.duration < 999000) {
-	// 			self.setDuration(self.duration + 1000);
-	// 		} else if (ev.direction === Hammer.DIRECTION_DOWN && self.duration > 0) {
-	// 			self.setDuration(self.duration - 1000);
-	// 		}
-	// 	}
-	// });
-  //
-	// hammerHandler.on('tap', function() {
-	// 	if (self.running) {
-	// 		self.reset();
-	// 	} else {
-	// 		self.start();
-	// 	}
-	// })
+	var hammerHandler = new Hammer(this.element);
+	hammerHandler.get('pan').set({ direction: Hammer.DIRECTION_VERTICAL });
+	hammerHandler.on('panup pandown', function(ev) {
+		if (!self.running) {
+			if (ev.direction === Hammer.DIRECTION_UP && self.duration < 999000) {
+				self.setDuration(self.duration + 1000);
+			} else if (ev.direction === Hammer.DIRECTION_DOWN && self.duration > 0) {
+				self.setDuration(self.duration - 1000);
+			}
+		}
+	});
+
+	hammerHandler.on('tap', function() {
+		if (self.running) {
+			self.reset();
+		} else {
+			self.start();
+		}
+	})
 }
 
 Timer.prototype.start = function() {
@@ -52,7 +52,6 @@ Timer.prototype.start = function() {
   boop.play();
 
   window.setTimeout(function() {
-    console.log("END");
     document.getElementById("beep").play();
     dbRef.set(false);
     countingDown = false;
@@ -75,7 +74,7 @@ Timer.prototype.start = function() {
 
 			self.frameReq = window.requestAnimationFrame(draw);
 		} else {
-			//self.running = false;
+			self.running = false;
 			self.els.seconds.textContent = 0;
 			self.els.ticker.style.height = '0%';
 			self.element.classList.add('countdown--ended');
@@ -102,16 +101,6 @@ Timer.prototype.setDuration = function(duration) {
 
 function newTimer(){
   timer = new Timer(timerSeconds * 1000, document.getElementById('countdown'));
-}
-
-function timerEnd(){
-  console.log("END");
-  document.getElementById("beep").play();
-  dbRef.set(false);
-  countingDown = false;
-  window.setTimeout(function() {
-    timer.reset();
-  }, 1000);
 }
 
 newTimer();
