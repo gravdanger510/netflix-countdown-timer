@@ -1,124 +1,79 @@
-// This is where it all goes :)
-var timerSeconds = 5,
-    timer,
-    dbRef = firebase.database().ref().child('ready'),
-    countingDown = false;
+var dbRef = firebase.database().ref().child('ready');
+var countingDown = false;
+var dbInterval;
 
-    dbRef.once('value')
-      .then(function(snapshot){
-        dbRef.set(false);
-      });
+var timerSeconds = 5;
+var secondsLeft = 0;
+var checkInterval = 7;
+var secondsElement = document.getElementById('seconds');
+secondsElement.innerHTML = timerSeconds;
 
-document.getElementById('seconds').innerHTML = timerSeconds;
+resetTimer();
 
-function Timer(duration, element) {
-	var self = this;
-	this.duration = duration;
-	this.element = element;
-	this.running = false;
-
-	this.els = {
-		ticker: document.getElementById('ticker'),
-		seconds: document.getElementById('seconds'),
-	};
-
-	var hammerHandler = new Hammer(this.element);
-	hammerHandler.get('pan').set({ direction: Hammer.DIRECTION_VERTICAL });
-	hammerHandler.on('panup pandown', function(ev) {
-		if (!self.running) {
-			if (ev.direction === Hammer.DIRECTION_UP && self.duration < 999000) {
-				self.setDuration(self.duration + 1000);
-			} else if (ev.direction === Hammer.DIRECTION_DOWN && self.duration > 0) {
-				self.setDuration(self.duration - 1000);
-			}
-		}
-	});
-
-	hammerHandler.on('tap', function() {
-		if (self.running) {
-			self.reset();
-		} else {
-			self.start();
-		}
-	})
+document.getElementById('countdown').onclick = function() {
+  startTimer();
 }
 
-Timer.prototype.start = function() {
-	var self = this;
-	var start = null;
-	this.running = true;
-	var remainingSeconds = this.els.seconds.textContent = this.duration / 1000;
-  var boop = document.getElementById("boop");
-  boop.play();
-
-  window.setTimeout(function() {
-    document.getElementById("beep").play();
-    dbRef.set(false);
-    countingDown = false;
-    timer.reset();
-  }, 1000 * timerSeconds);
-
-	function draw(now) {
-		if (!start) start = now;
-		var diff = now - start;
-		var newSeconds = Math.ceil((self.duration - diff)/1000);
-
-		if (diff <= self.duration) {
-			self.els.ticker.style.height = 100 - (diff/self.duration*100) + '%';
-
-			if (newSeconds != remainingSeconds) {
-				self.els.seconds.textContent = newSeconds;
-				remainingSeconds = newSeconds;
-        boop.play();
-			}
-
-			self.frameReq = window.requestAnimationFrame(draw);
-		} else {
-			self.running = false;
-			self.els.seconds.textContent = 0;
-			self.els.ticker.style.height = '0%';
-			self.element.classList.add('countdown--ended');
-      // timerEnd();
-
-		}
-	};
-
-	self.frameReq = window.requestAnimationFrame(draw);
+function boop() {
+  document.getElementById('boop').play();
+  subtractTime();
 }
 
-Timer.prototype.reset = function() {
-	this.running = false;
-	window.cancelAnimationFrame(this.frameReq);
-	this.els.seconds.textContent = this.duration / 1000;
-	this.els.ticker.style.height = null;
-	this.element.classList.remove('countdown--ended');
+function beep() {
+  document.getElementById('beep').play();
+  subtractTime();
+  resetTimer();
 }
 
-Timer.prototype.setDuration = function(duration) {
-	this.duration = duration;
-	this.els.seconds.textContent = this.duration / 1000;
+function resetTimer() {
+  countingDown = false;
+  dbRef.set(false);
+  dbInterval = setInterval(function() { checkDb() }, checkInterval);
+  secondsElement.innerHTML = timerSeconds;
+  secondsLeft = timerSeconds;
 }
 
-function newTimer(){
-  timer = new Timer(timerSeconds * 1000, document.getElementById('countdown'));
-}
-
-newTimer();
-
-document.body.onkeyup = function(e){
-  if(e.keyCode == 32){
-      dbRef.set(true);
+function startTimer() {
+  if (!countingDown) {
+    countingDown = true;
+    dbRef.set(true);
+    setTimeout(function() { preventStart() }, checkInterval);
+    timer();
   }
 }
 
-setInterval(function() {
-  if(countingDown != true) {
-    dbRef.once('value')
-      .then(function(snapshot) {
-        if (snapshot.val() == true) {
-          timer.start();
-          countingDown = true;
-        }
-      })
+function preventStart() {
+  dbRef.set(false);
+}
+
+function timer() {
+  if (countingDown) {
+    document.getElementById('boop').play();
+    var countdownInterval = setInterval("boop()", 1000);
+
+    setTimeout(function() {
+      clearInterval(countdownInterval);
+    }, (timerSeconds - 1) * 1000);
+
+    setTimeout(function() {
+      beep();
+    }, timerSeconds * 1000);
   }
-}, 7);
+}
+
+function subtractTime() {
+  secondsLeft--;
+  secondsElement.innerHTML = secondsLeft;
+}
+
+function checkDb() {
+  var snapshotValue;
+  dbRef.once('value').then(function(snapshot) {
+    snapshotValue = snapshot.val();
+
+    if (!countingDown && (snapshotValue == true)) {
+      clearInterval(dbInterval);
+      startTimer();
+    }
+  });
+}
