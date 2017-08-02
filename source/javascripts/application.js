@@ -8,7 +8,7 @@ Timer.countdown = {
 
       setTimeout(function() {
         clearInterval(countdownInterval);
-      }, (Timer.TIMER_TOTAL_SECONDS - 1) * 1000);
+      }, (Timer.TIMER_TOTAL_SECONDS - 1) * 1001);
 
       setTimeout(Timer.sounds.beep, Timer.TIMER_TOTAL_SECONDS * 1000);
     }
