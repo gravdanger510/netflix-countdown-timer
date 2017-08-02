@@ -44,12 +44,3 @@ page '/*.txt', layout: false
 #   activate :minify_css
 #   activate :minify_javascript
 # end
-
-activate :deploy do |deploy|
-  deploy.deploy_method   = :sftp
-  deploy.host            = 'box885.bluehost.com'
-  deploy.port            = 22
-  deploy.path            = '/public/tylerlmitchell/countdown'
-  deploy.user     = 'babysmac'
-  deploy.password = 'TY_TY_ty73'
-end
