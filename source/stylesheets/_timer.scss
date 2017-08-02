@@ -1,122 +1,55 @@
-$col-bg: #171717;
+$background: #171717;
+$main-color: #2BAFFF;
+$light-color: lighten($main-color, 12);
 
-$col-sun: #2BAFFF;
+$small-screen: 800px;
 
 html,
 body {
 	height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 body {
-	background: $col-bg;
+	background: $background;
   font-family: 'Shrikhand', sans-serif;
-}
-
-* {
-	touch-action: none;
 }
 
 .container {
 	align-items: center;
-	height: 90%;
+  color: #888;
 	display: flex;
+	height: 100%;
+  font-size: 7vmin;
+  flex-direction: row;
 	justify-content: center;
 	overflow: hidden;
+
+  @media (max-width: $small-screen) {
+    flex-direction: column;
+    font-size: 5vmin;
+  }
 }
 
 p {
-  color: #888;
-  font-size: 1.5em;
-  margin-left: 1.5em;
+  margin-left: 10vmin;
 }
 
 .countdown {
-	display: block;
-	width: 66vmin;
-	height: 66vmin;
-	position: relative;
-	display: flex;
-	justify-content: center;
 	align-items: center;
-
-	font-weight: 400;
-	font-size: 25vmin;
-
+  background-color: $main-color;
 	border-radius: 50%;
-	overflow: hidden;
+  color: $background;
 	cursor: pointer;
+	display: flex;
+	font-size: 25vmin;
+	height: 66vmin;
+	justify-content: center;
+	transition: background-color .3s;
+	width: 66vmin;
 
-	transition: width, height, border-radius, font-size;
-	transition-duration: 0.2s;
-
-	&--ended {
-		animation: buzz 0.5s;
-	}
-
-	&:active {
-		transform: scale(1.02);
-	}
-
-	@keyframes buzz {
-		0% {
-			transform: rotate(0);
-		}
-
-		10%, 30%, 50%, 70%, 90% {
-			transform: rotate(6deg);
-		}
-
-		20%, 40%, 60%, 80% {
-			transform: rotate(-6deg);
-		}
-
-		100% {
-			transform: rotate(0);
-		}
-	}
-
-	&--wide {
-		width: 100%;
-		height: 100%;
-
-		font-size: 50vmin;
-
-		border-radius: 0;
-	}
-
-	&__fill {
-		display: block;
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		left: 0;
-		bottom: 0;
-
-		background: $col-sun;
-		opacity: 1;
-	}
-
-	&__digit {
-		width: 100%;
-
-		color: $col-sun;
-		text-align: center;
-		mix-blend-mode: difference;
-		pointer-events: none;
-		user-select: none;
-	}
-
-	&__buttons {
-		position: absolute;
-		right: 50px;
-		top: 50%;
-		height: 200px;
-		margin-top: -100px;
-		color: white;
-		z-index: 1;
-	}
-
-	&__button {
-		height: 50%;
-	}
+  &:hover {
+    background-color: $light-color;
+  }
 }

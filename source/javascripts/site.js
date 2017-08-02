@@ -10,7 +10,7 @@ secondsElement.innerHTML = timerSeconds;
 
 resetTimer();
 
-document.body.onclick = function(e) {
+document.getElementById('countdown').onclick = function() {
   startTimer();
 }
 
