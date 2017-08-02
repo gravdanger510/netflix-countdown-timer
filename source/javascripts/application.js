@@ -58,7 +58,7 @@ Timer.init = {
     Timer.secondsLeft = 0;
 
     Timer.util.resetTimer();
-    document.body.onclick = function() {
+    document.getElementById('countdown').onclick = function() {
       Timer.countdown.start();
     };
   },
