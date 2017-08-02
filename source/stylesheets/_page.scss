@@ -1,0 +1,11 @@
+.git-link {
+  bottom: 1em;
+  left: 50%;
+  opacity: .2;
+  position: absolute;
+  transform: translateX(-50%);
+
+  &:hover {
+    opacity: 1;
+  }
+}

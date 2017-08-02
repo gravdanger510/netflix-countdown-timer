@@ -17,7 +17,7 @@ body {
   display: -ms-flexbox;
   display: flex;
   height: 100%;
-  font-size: 7vmin;
+  font-size: 2.2em;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
@@ -32,10 +32,10 @@ body {
       -webkit-box-direction: normal;
           -ms-flex-direction: column;
               flex-direction: column;
-      font-size: 5vmin; } }
+      font-size: 1.5em; } }
 
 p {
-  margin-left: 10vmin; }
+  padding: 1.5em; }
 
 .countdown {
   -webkit-box-align: center;
@@ -48,13 +48,15 @@ p {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  font-size: 25vmin;
-  height: 66vmin;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  font-size: 20vmin;
+  height: 55vmin;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
   -webkit-transition: background-color .3s;
   transition: background-color .3s;
-  width: 66vmin; }
+  width: 55vmin; }
   .countdown:hover {
     background-color: #68c6ff; }
