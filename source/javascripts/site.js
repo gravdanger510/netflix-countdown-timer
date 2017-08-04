@@ -77,3 +77,10 @@ function checkDb() {
     }
   });
 }
+
+var ua = navigator.userAgent.toLowerCase();
+if (ua.indexOf('safari') != -1) {
+  if (ua.indexOf('chrome') <= -1) {
+    document.getElementById('is-safari').classList.add('yep');
+  }
+}
