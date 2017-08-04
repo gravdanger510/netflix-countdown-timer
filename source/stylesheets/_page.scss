@@ -1,3 +1,16 @@
+#is-safari {
+  display: none;
+
+  &.yep {
+    color: $main-color;
+    display: block;
+    padding: 1em;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+  }
+}
+
 .git-link {
   bottom: 1em;
   left: 50%;
